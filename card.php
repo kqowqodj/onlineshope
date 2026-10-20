@@ -1,3 +1,4 @@
+<?php include('pendo_track.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,5 +60,9 @@
     </center>
 
 
+    <?php
+    // Pendo: send the events insert_card.php and del_card.php queued before redirecting here
+    pendo_flush_events();
+    ?>
 </body>
 </html>
