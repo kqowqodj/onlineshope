@@ -1,6 +1,7 @@
 <?php
 
 include('config.php');
+include('pendo_track.php');
 
 if (isset($_POST['update'])) {
     // التأكد من أن جميع الحقول مطلوبة قد تم تعبئتها
@@ -23,14 +24,41 @@ if (isset($_POST['update'])) {
             
             if (mysqli_query($con, $update)) {
                 if (move_uploaded_file($image_location, $image_up)) {
+                    pendo_track('product_updated', [
+                        'product_id' => $_POST['id'],
+                        'product_name' => $_POST['name'],
+                        'price' => pendo_track_number($_POST['price']),
+                        'image_type' => $image_type,
+                    ]);
                     echo "<script>alert('تم تحديث المنتج بنجاح')</script>";
                 } else {
+                    // The product row was already updated, but its new image was not saved.
+                    pendo_track('product_update_failed', [
+                        'product_id' => $_POST['id'],
+                        'failure_reason' => 'image_move_error',
+                        'image_type' => $image_type,
+                        'upload_error_code' => $_FILES['image']['error'],
+                    ]);
                     echo "<script>alert('حدثت مشكلة، لم يتم رفع المنتج')</script>";
                 }
             } else {
+                pendo_track('product_update_failed', [
+                    'product_id' => $_POST['id'],
+                    'failure_reason' => 'db_update_error',
+                    'image_type' => $image_type,
+                    'upload_error_code' => $_FILES['image']['error'],
+                ]);
                 echo "<script>alert('حدث خطأ أثناء إدخال البيانات في قاعدة البيانات')</script>";
             }
         } else {
+            // Editing only the name or price also lands here, because no new image
+            // was chosen: upload_error_code is then 4.
+            pendo_track('product_update_failed', [
+                'product_id' => $_POST['id'],
+                'failure_reason' => 'invalid_file_type',
+                'image_type' => $image_type,
+                'upload_error_code' => $_FILES['image']['error'],
+            ]);
             echo "<script>alert('نوع الملف غير مسموح به. الرجاء رفع صورة بامتداد JPEG, PNG, أو GIF.')</script>";
         }
 
@@ -38,6 +66,10 @@ if (isset($_POST['update'])) {
         header('Location: index.php');
         exit; // إيقاف تنفيذ السكربت بعد إعادة التوجيه
     } else {
+        pendo_track('product_update_failed', [
+            'product_id' => $_POST['id'] ?? null,
+            'failure_reason' => 'missing_fields',
+        ]);
         echo "<script>alert('يرجى ملء جميع الحقول المطلوبة.');</script>";
     }
 }
