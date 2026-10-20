@@ -25,6 +25,7 @@ include('config.php');
     </style>
  
 
+    <?php include('pendo.php'); ?>
 </head>
 <body>
     <div class="main">

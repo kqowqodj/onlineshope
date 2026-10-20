@@ -27,6 +27,7 @@
 
 
     </style>
+    <?php include('pendo.php'); ?>
 </head>
 <body>
     <center>
