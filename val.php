@@ -12,6 +12,7 @@ include('config.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تاكيد شراء المنتج</title>
+    <?php include('pendo.php'); ?>
     <style>
         input{
             display: none;

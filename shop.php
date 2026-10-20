@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>products |المنتجات </title>
+    <?php include('pendo.php'); ?>
     <link rel="stylesheet" href="index.css">
     <style>
         h3{
