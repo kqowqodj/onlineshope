@@ -1,3 +1,4 @@
+<?php include('pendo_track.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,5 +26,9 @@
           </div>
           <P>اللهم انت حسبي توكلت عليك </P>
     </center>
+    <?php
+    // Pendo: send the events insert.php and up.php queued before redirecting here
+    pendo_flush_events();
+    ?>
 </body>
 </html>
