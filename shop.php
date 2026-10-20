@@ -33,6 +33,7 @@
 
 
     </style>
+    <?php include('pendo.php'); ?>
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
